@@ -1,0 +1,211 @@
+{
+  "home": {
+    "title": "OneLife, une ville qui se souvient de tout.",
+    "lede": "Un serveur roleplay francophone où chaque choix a une suite. Pas de reset de scénario, pas de raccourci : ce que vous construisez ici reste.",
+    "features": [
+      {
+        "title": "Un RP sérieux et encadré",
+        "text": "Un règlement clair, une équipe de modération présente, et un système de sanctions transparent."
+      },
+      {
+        "title": "Une économie qui tourne",
+        "text": "Jobs légaux et illégaux, entreprises jouables, immobilier : la ville vit de ses habitants."
+      },
+      {
+        "title": "Des factions vivantes",
+        "text": "Institutions, organisations et groupes indépendants coexistent selon des enjeux qui évoluent."
+      },
+      {
+        "title": "Support réactif",
+        "text": "Une équipe joignable par ticket, des retours suivis, une communauté qui grandit."
+      }
+    ],
+    "steps": [
+      "Rejoignez le Discord et lisez les annonces.",
+      "Lisez le règlement en entier avant votre première connexion.",
+      "Passez la whitelist / créez votre personnage.",
+      "Connectez-vous et commencez votre histoire."
+    ]
+  },
+  "reglement": {
+    "rp": [
+      {
+        "title": "Roleplay avant tout",
+        "text": "Toute action doit avoir une justification IC. Le metagaming et le powergaming sont interdits."
+      },
+      {
+        "title": "Value your life",
+        "text": "Votre personnage tient à sa vie. Un braquage à cinq contre un ne se conteste pas à mains nues."
+      },
+      {
+        "title": "Fear RP",
+        "text": "Un personnage normal a peur pour sa vie face à une arme."
+      },
+      {
+        "title": "Nommage réaliste",
+        "text": "Prénom et nom crédibles, sans référence à un pseudo ou une marque."
+      },
+      {
+        "title": "Délais de RP",
+        "text": "Respectez les temporisations après arrestation, hospitalisation ou décès de personnage."
+      }
+    ],
+    "hrp": [
+      {
+        "title": "Respect entre joueurs",
+        "text": "Aucune insulte, discrimination ou harcèlement en OOC."
+      },
+      {
+        "title": "Combat logging",
+        "text": "Se déconnecter pour échapper à un RP en cours est interdit."
+      },
+      {
+        "title": "Exploits et bugs",
+        "text": "Tout bug doit être signalé à l'équipe, jamais exploité."
+      },
+      {
+        "title": "Signalement",
+        "text": "Tout litige se règle par ticket support."
+      },
+      {
+        "title": "Sanctions",
+        "text": "Échelle progressive : avertissement, kick, ban temporaire, ban définitif."
+      }
+    ],
+    "comm": [
+      {
+        "title": "Appel du 911",
+        "text": "Réservé aux urgences réelles en RP."
+      },
+      {
+        "title": "Radios et fréquences",
+        "text": "Chaque faction a sa fréquence ; écouter celle d'un autre groupe sans justification IC est interdit."
+      },
+      {
+        "title": "Téléphone et réseaux IC",
+        "text": "Infos obtenues via un téléphone IC utilisables uniquement en cohérence avec le RP."
+      }
+    ],
+    "illegal": [
+      {
+        "title": "Braquages",
+        "text": "Nombre de joueurs/forces de l'ordre minimum requis, cooldown entre deux braquages du même commerce."
+      },
+      {
+        "title": "Prises d'otage",
+        "text": "Durée maximale encadrée, otage traité avec un RP cohérent."
+      },
+      {
+        "title": "Guerre de territoire",
+        "text": "Les affrontements suivent les règles dédiées annoncées par le staff."
+      }
+    ],
+    "lexique": [
+      {
+        "term": "RP",
+        "def": "Roleplay — agir en cohérence avec son personnage."
+      },
+      {
+        "term": "HRP",
+        "def": "Hors roleplay — tout ce qui concerne le joueur réel."
+      },
+      {
+        "term": "Metagaming",
+        "def": "Utiliser en jeu une info obtenue hors RP."
+      },
+      {
+        "term": "Powergaming",
+        "def": "Forcer une action sur un autre joueur sans marge de réaction."
+      },
+      {
+        "term": "Fear RP",
+        "def": "Jouer la peur de façon réaliste face à une menace."
+      },
+      {
+        "term": "VDM",
+        "def": "Value your life — valoriser la vie de son personnage."
+      }
+    ]
+  },
+  "lore": {
+    "intro": [
+      {
+        "p": "OneLife se déroule dans une ville où rien ne se répare tout seul. Remplacez ce texte par l'histoire réelle de votre serveur."
+      },
+      {
+        "h": "Le contexte",
+        "p": "Décrivez la situation politique, économique ou sociale qui sert de toile de fond aux personnages."
+      },
+      {
+        "h": "Les factions",
+        "p": "Présentez les groupes qui structurent la ville : institutions, organisations criminelles, entreprises."
+      }
+    ],
+    "videoId": "dQw4w9WgXcQ",
+    "gallery": [
+      "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=600&q=60",
+      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=60",
+      "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&q=60"
+    ]
+  },
+  "legal": {
+    "legal": [
+      {
+        "title": "Emplois légaux",
+        "text": "Mécanicien, chauffeur, commerçant, forces de l'ordre : jobs déclarés, revenus réguliers."
+      },
+      {
+        "title": "Entreprises jouables",
+        "text": "Un joueur peut posséder et gérer un commerce légal, avec un RP de gestion réel."
+      },
+      {
+        "title": "Fiscalité",
+        "text": "Les revenus légaux sont soumis aux taxes définies par l'administration IC de la ville."
+      }
+    ],
+    "illegal": [
+      {
+        "title": "Reprise de territoire",
+        "text": "Occuper une zone un temps donné pour la contrôler. Pas de système de kills : la présence et la tenue de zone comptent."
+      },
+      {
+        "title": "Récompenses de contrôle",
+        "text": "Argent au gang + avantages territoriaux (ex : vente de drogue plus rentable dans la zone contrôlée)."
+      },
+      {
+        "title": "Cooldown de reprise",
+        "text": "Un délai s'applique avant qu'une même zone puisse être reprise après un changement de contrôle."
+      },
+      {
+        "title": "Règles d'engagement",
+        "text": "Toute reprise doit être annoncée au staff avant le début de l'action, hors abus ou débordement HRP."
+      }
+    ]
+  },
+  "team": [
+    {
+      "name": "Kibo",
+      "role": "Fondateur / Développeur",
+      "text": "Développement serveur, scripts sur-mesure.",
+      "img": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60"
+    },
+    {
+      "name": "Membre",
+      "role": "Rôle",
+      "text": "Description courte du rôle.",
+      "img": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60"
+    },
+    {
+      "name": "Membre",
+      "role": "Rôle",
+      "text": "Description courte du rôle.",
+      "img": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60"
+    },
+    {
+      "name": "Membre",
+      "role": "Rôle",
+      "text": "Description courte du rôle.",
+      "img": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60"
+    }
+  ]
+}
