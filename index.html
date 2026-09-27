@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OneLife RP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e11; --panel: rgba(255,255,255,0.035); --panel-border: rgba(255,255,255,0.08);
+    --amber: #e2a544; --amber-dim: #7a5a28; --green: #6fae7c; --red: #c9695f;
+    --text: #eae5da; --text-muted: #93989e; --steel: #2a2f37;
+    font-family: 'Inter', sans-serif; box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  body { margin: 0; min-height: 100%; background: radial-gradient(1200px 600px at 15% -10%, #14181d 0%, var(--bg) 55%), var(--bg); color: var(--text); line-height: 1.55; }
+  h1, h2, h3 { font-family: 'Bitter', serif; margin: 0; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  input, select, textarea { font-family: inherit; }
+
+  .frame { display: flex; min-height: 100vh; min-height: 100dvh; max-width: 1220px; margin: 0 auto; }
+
+  .sidebar { width: 240px; flex-shrink: 0; padding: 32px 18px; border-right: 1px solid var(--panel-border); display: flex; flex-direction: column; gap: 30px; background: var(--bg); position: sticky; top: 0; align-self: flex-start; height: 100vh; height: 100dvh; overflow-y: auto; }
+  .brand { display: flex; flex-direction: column; gap: 4px; }
+  .brand .mark { width: 40px; height: 40px; border: 1px solid var(--amber-dim); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--amber); font-family: 'Bitter', serif; font-weight: 700; font-size: 18px; margin-bottom: 6px; overflow: hidden; }
+  .brand .mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .brand h1 { font-size: 20px; color: var(--text); }
+  .brand span { font-size: 12.5px; color: var(--text-muted); }
+
+  nav { display: flex; flex-direction: column; gap: 2px; }
+  .navlink { all: unset; cursor: pointer; padding: 9px 11px; border-radius: 6px; font-size: 14.5px; color: var(--text-muted); display: flex; align-items: center; gap: 10px; transition: color .15s ease, background .15s ease; }
+  .navlink .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--steel); flex-shrink: 0; transition: background .15s ease, box-shadow .15s ease; }
+  .navlink:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .navlink.active { color: var(--text); background: var(--panel); }
+  .navlink.active .dot { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+
+  .navsub { display: none; flex-direction: column; margin: 2px 0 6px 21px; border-left: 1px solid var(--panel-border); padding-left: 11px; gap: 1px; }
+  .navsub.open { display: flex; }
+  .navsublink { all: unset; cursor: pointer; padding: 6px 8px; font-size: 12.8px; color: var(--text-muted); border-radius: 5px; display: block; }
+  .navsublink:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .navsublink.active { color: var(--amber); }
+
+  .sidebar-footer { margin-top: auto; font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 10px; }
+  .connect-btn { all: unset; cursor: pointer; font-size: 12.5px; color: var(--amber); padding: 7px 0; }
+  .connect-btn:hover { text-decoration: underline; }
+
+  main { flex: 1; min-width: 0; padding: 40px 44px 60px; }
+  .panel { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 34px 38px; }
+  .section { display: none; }
+  .section.active { display: block; animation: reveal .3s ease; }
+  @keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .eyebrow { color: var(--amber); font-size: 13px; margin-bottom: 8px; }
+  .section h2 { font-size: 28px; margin-bottom: 6px; }
+  .lede { color: var(--text-muted); max-width: 62ch; margin-top: 10px; font-size: 15px; }
+
+  .stat-row { display: flex; gap: 28px; margin-top: 30px; flex-wrap: wrap; }
+  .stat { border-left: 2px solid var(--amber-dim); padding-left: 14px; }
+  .stat b { font-family: 'Bitter', serif; font-size: 22px; display: block; }
+  .stat span { color: var(--text-muted); font-size: 13px; }
+  .cta-row { margin-top: 34px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 11px 20px; border-radius: 6px; font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid var(--panel-border); color: var(--text); cursor: pointer; background: none; font-family: inherit; }
+  .btn.primary { background: var(--amber); color: #1a1305; border-color: var(--amber); }
+  .btn.small { padding: 8px 14px; font-size: 13px; }
+  .btn.ghost { border-color: transparent; color: var(--text-muted); }
+  .btn.danger { border-color: rgba(201,105,95,.4); color: var(--red); }
+  .btn.tiny { padding: 4px 9px; font-size: 12px; border-radius: 5px; }
+
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 44px; }
+  .feature { border-top: 1px solid var(--panel-border); padding-top: 14px; }
+  .feature h3 { font-size: 15px; margin-bottom: 6px; color: var(--text); }
+  .feature p { margin: 0; font-size: 13.5px; color: var(--text-muted); }
+
+  .steps { margin-top: 40px; }
+  .steps ol { margin: 12px 0 0; padding-left: 20px; color: var(--text-muted); font-size: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .steps li::marker { color: var(--amber); font-family: 'Bitter', serif; }
+
+  .subpanel { display: none; }
+  .subpanel.active { display: block; animation: reveal .25s ease; }
+  .subpanel .subnote { color: var(--text-muted); font-size: 13.5px; margin: 22px 0 -6px; }
+  .rules { display: flex; flex-direction: column; margin-top: 22px; }
+  .rule { display: flex; gap: 18px; padding: 16px 0; border-top: 1px solid var(--panel-border); }
+  .rule:last-child { border-bottom: 1px solid var(--panel-border); }
+  .rule .num { font-family: 'Bitter', serif; color: var(--amber); font-size: 15px; width: 30px; flex-shrink: 0; padding-top: 1px; }
+  .rule h3 { font-size: 15px; margin-bottom: 4px; }
+  .rule p { margin: 0; color: var(--text-muted); font-size: 13.8px; max-width: 60ch; }
+
+  .lexique { display: flex; flex-direction: column; margin-top: 20px; }
+  .lexique-item { display: flex; gap: 18px; padding: 13px 0; border-top: 1px solid var(--panel-border); }
+  .lexique-item:last-child { border-bottom: 1px solid var(--panel-border); }
+  .lexique-item dt { font-family: 'Bitter', serif; color: var(--amber); font-size: 14px; width: 90px; flex-shrink: 0; }
+  .lexique-item dd { margin: 0; color: var(--text-muted); font-size: 13.8px; }
+
+  .lore-block { margin-top: 20px; max-width: 66ch; }
+  .lore-block p { color: #cfc9bd; font-size: 15px; margin: 0 0 16px; }
+  .lore-block h3 { font-size: 16px; margin: 22px 0 8px; color: var(--amber); }
+  .video-card { margin-top: 26px; border: 1px solid var(--panel-border); border-radius: 8px; overflow: hidden; background: #000; }
+  .video-card .frame-16-9 { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 18px; }
+  .gallery img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; border: 1px solid var(--panel-border); display: block; }
+
+  .legal-tabs { display: flex; gap: 8px; margin-top: 24px; }
+  .legal-tab { all: unset; cursor: pointer; padding: 9px 16px; border-radius: 999px; font-size: 13.5px; border: 1px solid var(--panel-border); color: var(--text-muted); }
+  .legal-tab.is-on[data-active="legal"] { border-color: rgba(111,174,124,.5); color: var(--green); background: rgba(111,174,124,.1); }
+  .legal-tab.is-on[data-active="illegal"] { border-color: rgba(201,105,95,.5); color: var(--red); background: rgba(201,105,95,.1); }
+  .legal-pane { display: none; margin-top: 8px; }
+  .legal-pane.active { display: block; animation: reveal .25s ease; }
+  .legal-note { border: 1px solid var(--panel-border); border-left: 3px solid var(--amber); padding: 12px 16px; border-radius: 6px; font-size: 13.5px; color: var(--text-muted); margin: 20px 0; }
+
+  .job-status-wrap { width: 64px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; padding-top: 3px; }
+  .status-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .status-dot.libre { background: var(--green); box-shadow: 0 0 7px var(--green); animation: dotpulse 1.3s infinite; }
+  .status-dot.pris { background: var(--red); box-shadow: 0 0 7px var(--red); }
+  @keyframes dotpulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  .status-label { font-size: 10.5px; color: var(--text-muted); }
+  .job-sub { font-size: 12px; color: var(--amber); display: block; margin: 2px 0 6px; }
+
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-top: 22px; }
+  .member { border: 1px solid var(--panel-border); border-radius: 8px; padding: 16px; background: rgba(255,255,255,0.02); }
+  .member .avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--steel); overflow: hidden; margin-bottom: 12px; }
+  .member .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .member h3 { font-size: 14.5px; margin-bottom: 2px; }
+  .member span { font-size: 12.5px; color: var(--amber); }
+  .member p { font-size: 12.5px; color: var(--text-muted); margin: 8px 0 0; }
+
+  .lock-box { max-width: 360px; margin-top: 26px; border: 1px solid var(--panel-border); border-radius: 10px; padding: 26px; background: rgba(255,255,255,0.02); }
+  .lock-box input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--panel-border); background: #0e1013; color: var(--text); font-size: 14px; margin-bottom: 12px; }
+
+  .admin-tabs { display: flex; gap: 6px; margin-top: 22px; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; flex-wrap: wrap; }
+  .admin-tab { all: unset; cursor: pointer; padding: 7px 14px; border-radius: 6px; font-size: 13.5px; color: var(--text-muted); }
+  .admin-tab.active { color: var(--text); background: var(--panel); }
+  .admin-tabpane { display: none; margin-top: 22px; }
+  .admin-tabpane.active { display: block; animation: reveal .2s ease; }
+
+  .admin-subblock { border: 1px solid var(--panel-border); border-radius: 8px; padding: 16px; margin-bottom: 22px; }
+  .admin-subblock h3 { font-size: 13.5px; color: var(--amber); margin-bottom: 12px; }
+
+  .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 10px; align-items: end; margin-bottom: 20px; }
+  .admin-form label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+  .admin-form input, .admin-form select, .admin-form textarea { width: 100%; padding: 9px 10px; border-radius: 6px; border: 1px solid var(--panel-border); background: #0e1013; color: var(--text); font-size: 13.5px; }
+  .admin-form .full { grid-column: 1 / -1; }
+  .admin-form textarea { min-height: 70px; resize: vertical; }
+  .admin-form .btnrow { display: flex; gap: 8px; }
+
+  .admin-list { display: flex; flex-direction: column; gap: 8px; }
+  .admin-row { display: flex; align-items: center; gap: 12px; border: 1px solid var(--panel-border); border-radius: 7px; padding: 10px 12px; }
+  .admin-row .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--panel-border); flex-shrink: 0; }
+  .admin-row .badge.legal { color: var(--green); border-color: rgba(111,174,124,.4); }
+  .admin-row .badge.illegal { color: var(--red); border-color: rgba(201,105,95,.4); }
+  .admin-row .info { flex: 1; min-width: 0; }
+  .admin-row .info b { font-size: 13.5px; display: block; }
+  .admin-row .info span { font-size: 12.5px; color: var(--text-muted); }
+  .admin-row img.thumb { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .admin-row .row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .admin-note { border: 1px solid var(--panel-border); border-left: 3px solid var(--amber); padding: 14px 16px; border-radius: 6px; font-size: 13.5px; color: var(--text-muted); margin: 18px 0; max-width: 68ch; }
+  .admin-note b { color: var(--text); }
+  .json-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+  #admin-json { width: 100%; min-height: 280px; background: #08090b; color: #d8e8d8; border: 1px solid var(--panel-border); border-radius: 8px; padding: 14px; font-size: 12.5px; line-height: 1.5; resize: vertical; font-family: 'JetBrains Mono', monospace; }
+  #admin-status { font-size: 13px; margin-top: 10px; min-height: 18px; }
+  #admin-status.ok { color: var(--green); }
+  #admin-status.err { color: var(--red); }
+  .file-input-label { display: inline-block; padding: 8px 14px; border-radius: 6px; font-size: 13px; border: 1px solid var(--panel-border); cursor: pointer; }
+  .file-input-label input { display: none; }
+
+  @media (max-width: 780px) {
+    .frame { flex-direction: column; }
+    .sidebar { width: auto; height: auto; flex-direction: row; align-items: center; padding: 14px 16px; border-right: none; border-bottom: 1px solid var(--panel-border); gap: 14px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 5; overflow-x: auto; }
+    .sidebar-footer { display: none; }
+    .brand { flex-direction: row; align-items: center; gap: 10px; flex-shrink: 0; }
+    .brand .mark { margin-bottom: 0; }
+    .brand span { display: none; }
+    nav { flex-direction: row; margin-left: auto; gap: 0; }
+    .navlink { padding: 8px 10px; white-space: nowrap; }
+    .navsub, .navsub.open { display: none; }
+    main { padding: 24px 16px 40px; }
+    .panel { padding: 22px 18px; }
+  }
+
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .section.active, .subpanel.active, .legal-pane.active, .admin-tabpane.active, .status-dot.libre { animation: none; } }
+
+  @media (min-width: 1440px) {
+    .frame { max-width: 1400px; }
+    .sidebar { width: 276px; padding: 32px 18px 32px 29px; gap: 34px; }
+    .brand .mark { width: 44px; height: 44px; }
+    .brand h1 { font-size: 21px; }
+    main { padding: 48px 60px 80px; }
+    .panel { padding: 42px 52px; }
+    .section h2 { font-size: 30px; }
+    .feature-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark" id="brand-mark">OL</div>
+      <h1>OneLife RP</h1>
+      <span>Serveur FiveM — roleplay francophone</span>
+    </div>
+    <nav>
+      <button class="navlink active" data-target="accueil"><span class="dot"></span>Accueil</button>
+
+      <button class="navlink" data-target="reglement"><span class="dot"></span>Règlement</button>
+      <div class="navsub" id="reglement-navsub"></div>
+
+      <button class="navlink" data-target="lore"><span class="dot"></span>Lore</button>
+      <button class="navlink" data-target="legal"><span class="dot"></span>Légal / Illégal</button>
+      <button class="navlink" data-target="equipe"><span class="dot"></span>Équipe</button>
+      <button class="navlink" data-target="admin" id="admin-navlink" style="display:none;"><span class="dot"></span>Admin</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="connect-btn" id="connect-btn" onclick="activateSection('admin')">Connexion</button>
+      <span>© OneLife RP</span>
+    </div>
+  </aside>
+
+  <main>
+    <div class="panel">
+
+      <section class="section active" id="accueil">
+        <div class="eyebrow">Bienvenue</div>
+        <h2 id="home-title"></h2>
+        <p class="lede" id="home-lede"></p>
+        <div class="stat-row">
+          <div class="stat"><b>1</b><span>ville, une seule vie</span></div>
+          <div class="stat"><b>FR</b><span>communauté francophone</span></div>
+          <div class="stat"><b>24/7</b><span>serveur actif</span></div>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="javascript:void(0)">Rejoindre le Discord</a>
+          <a class="btn" href="javascript:void(0)" onclick="activateSection('reglement');">Lire le règlement</a>
+        </div>
+        <div class="feature-grid" id="home-features"></div>
+        <div class="steps">
+          <div class="eyebrow" style="margin-top:8px;">Pour commencer</div>
+          <ol id="home-steps"></ol>
+        </div>
+      </section>
+
+      <section class="section" id="reglement">
+        <div class="eyebrow">Avant de jouer</div>
+        <h2>Règlement</h2>
+        <p class="lede">Les règles qui tiennent la ville debout, classées par catégorie.</p>
+        <div id="reglement-subpanels"></div>
+      </section>
+
+      <section class="section" id="lore">
+        <div class="eyebrow">L'univers</div>
+        <h2>Lore</h2>
+        <div class="lore-block" id="lore-text"></div>
+        <h3 style="margin-top:30px;">Trailer</h3>
+        <div class="video-card">
+          <div class="frame-16-9">
+            <iframe id="lore-video" src="" title="Trailer OneLife RP" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <h3 style="margin-top:30px;">Galerie</h3>
+        <div class="gallery" id="lore-gallery"></div>
+      </section>
+
+      <section class="section" id="legal">
+        <div class="eyebrow">Reprises</div>
+        <h2>Légal / Illégal</h2>
+        <p class="lede">Entreprises et organisations de la ville — disponibles ou déjà prises.</p>
+        <div class="legal-tabs">
+          <button class="legal-tab is-on" data-active="legal" onclick="showLegal('legal')">Entreprises (légal)</button>
+          <button class="legal-tab" data-active="illegal" onclick="showLegal('illegal')">Organisations (illégal)</button>
+        </div>
+        <div class="legal-pane active" id="legal-pane-legal">
+          <div class="rules" id="legal-legal"></div>
+        </div>
+        <div class="legal-pane" id="legal-pane-illegal">
+          <div class="legal-note">Système de <b style="color:var(--text)">capture de territoire</b> : occuper une zone un temps donné pour la contrôler.</div>
+          <div class="rules" id="legal-illegal"></div>
+        </div>
+      </section>
+
+      <section class="section" id="equipe">
+        <div class="eyebrow">L'équipe</div>
+        <h2>Le projet</h2>
+        <p class="lede">Les personnes derrière OneLife.</p>
+        <div class="team-grid" id="team-grid"></div>
+      </section>
+
+      <section class="section" id="admin">
+        <div class="eyebrow">Zone privée</div>
+        <h2>Admin</h2>
+
+        <div id="admin-lock">
+          <p class="lede">Accès réservé à l'équipe.</p>
+          <div class="lock-box">
+            <label for="admin-pin" style="font-size:12px;color:var(--text-muted);">Code admin</label>
+            <input type="password" id="admin-pin" placeholder="••••••">
+            <button class="btn primary small" onclick="tryUnlock()" style="width:100%;">Déverrouiller</button>
+            <div id="lock-status" style="font-size:12.5px;color:var(--red);margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <div id="admin-panel" style="display:none;">
+          <p class="lede">Modifie le site sans toucher au code.</p>
+
+          <div class="admin-tabs">
+            <button class="admin-tab active" data-atab="general">Général</button>
+            <button class="admin-tab" data-atab="reglement">Règlement</button>
+            <button class="admin-tab" data-atab="lore">Lore</button>
+            <button class="admin-tab" data-atab="jobs">Jobs</button>
+            <button class="admin-tab" data-atab="staff">Staff / Équipe</button>
+            <button class="admin-tab" data-atab="advanced">Avancé (JSON)</button>
+          </div>
+
+          <div class="admin-tabpane active" data-apane="general">
+            <div class="admin-form">
+              <div class="full"><label>URL du logo (remplace le monogramme "OL")</label><input id="gen-logo" placeholder="https://..."></div>
+              <div class="full"><label>Titre d'accueil</label><input id="gen-title"></div>
+              <div class="full"><label>Texte d'accueil</label><textarea id="gen-lede"></textarea></div>
+              <div><button class="btn primary small" onclick="saveGeneral()">Enregistrer</button></div>
+            </div>
+          </div>
+
+          <div class="admin-tabpane" data-apane="reglement">
+            <div class="admin-subblock">
+              <h3>Catégories</h3>
+              <div class="admin-form">
+                <div><label>Catégorie à afficher</label>
+                  <select id="reg-cat" onchange="cancelRegEdit(); renderRegAdminList();"></select>
+                </div>
+                <div><label>Renommer en</label><input id="reg-cat-rename" placeholder="Nouveau nom"></div>
+                <div class="btnrow">
+                  <button class="btn small" onclick="renameCategory()">Renommer</button>
+                  <button class="btn small danger" onclick="deleteCategory()">Supprimer la catégorie</button>
+                </div>
+              </div>
+              <div class="admin-form">
+                <div><label>Nouvelle catégorie</label><input id="newcat-label" placeholder="Ex : Événements"></div>
+                <div><label>Type</label><select id="newcat-type"><option value="rules">Règles (titre + texte)</option><option value="lexique">Lexique (terme + définition)</option></select></div>
+                <div><button class="btn small" onclick="addCategory()">Créer la catégorie</button></div>
+              </div>
+            </div>
+
+            <div class="admin-form">
+              <div id="reg-fields-normal" style="display:contents;">
+                <div><label>Titre</label><input id="reg-title" placeholder="Ex : Fear RP"></div>
+                <div class="full"><label>Texte</label><input id="reg-text" placeholder="Description de la règle"></div>
+              </div>
+              <div id="reg-fields-lexique" style="display:none;">
+                <div><label>Terme</label><input id="reg-term" placeholder="Ex : VDM"></div>
+                <div class="full"><label>Définition</label><input id="reg-def" placeholder="Définition du terme"></div>
+              </div>
+              <div class="btnrow">
+                <button class="btn primary small" id="reg-add-btn" onclick="addRegItem()">Ajouter</button>
+                <button class="btn ghost small" id="reg-cancel-btn" onclick="cancelRegEdit()" style="display:none;">Annuler</button>
+              </div>
+            </div>
+            <div class="admin-list" id="reg-admin-list"></div>
+          </div>
+
+          <div class="admin-tabpane" data-apane="lore">
+            <div class="admin-form">
+              <div class="full"><label>ID de la vidéo YouTube (trailer)</label><input id="lore-videoid-input" placeholder="ex : dQw4w9WgXcQ"></div>
+              <div><button class="btn primary small" onclick="saveLoreVideo()">Enregistrer la vidéo</button></div>
+            </div>
+            <div class="admin-form">
+              <div><label>Titre (optionnel)</label><input id="lore-p-h" placeholder="Ex : Le contexte"></div>
+              <div class="full"><label>Paragraphe</label><input id="lore-p-text" placeholder="Texte du paragraphe"></div>
+              <div class="btnrow">
+                <button class="btn primary small" id="lorep-add-btn" onclick="addLoreParagraph()">Ajouter un paragraphe</button>
+                <button class="btn ghost small" id="lorep-cancel-btn" onclick="cancelLorePEdit()" style="display:none;">Annuler</button>
+              </div>
+            </div>
+            <div class="admin-list" id="lore-p-list" style="margin-bottom:22px;"></div>
+            <div class="admin-form">
+              <div class="full"><label>URL d'une image de galerie</label><input id="lore-img-url" placeholder="https://..."></div>
+              <div class="btnrow">
+                <button class="btn primary small" id="loreimg-add-btn" onclick="addLoreImage()">Ajouter l'image</button>
+                <button class="btn ghost small" id="loreimg-cancel-btn" onclick="cancelLoreImgEdit()" style="display:none;">Annuler</button>
+              </div>
+            </div>
+            <div class="admin-list" id="lore-img-list"></div>
+          </div>
+
+          <div class="admin-tabpane" data-apane="jobs">
+            <div class="admin-form">
+              <div><label>Type</label><select id="job-type" onchange="updateJobOrgLabel()"><option value="legal">Légal</option><option value="illegal">Illégal</option></select></div>
+              <div><label id="job-org-label">Entreprise</label><input id="job-org" placeholder="Ex : Garage Central"></div>
+              <div><label>Nom du poste</label><input id="job-name" placeholder="Ex : Mécanicien"></div>
+              <div><label>Statut</label><select id="job-status"><option value="libre">Libre</option><option value="pris">Pris</option></select></div>
+              <div class="full"><label>Description</label><input id="job-desc" placeholder="Courte description"></div>
+              <div class="btnrow">
+                <button class="btn primary small" id="job-add-btn" onclick="addJob()">Ajouter</button>
+                <button class="btn ghost small" id="job-cancel-btn" onclick="cancelJobEdit()" style="display:none;">Annuler</button>
+              </div>
+            </div>
+            <div class="admin-list" id="job-admin-list"></div>
+          </div>
+
+          <div class="admin-tabpane" data-apane="staff">
+            <div class="admin-form">
+              <div><label>Nom</label><input id="staff-name" placeholder="Pseudo"></div>
+              <div><label>Rôle</label><input id="staff-role" placeholder="Ex : Modérateur"></div>
+              <div class="full"><label>URL de la photo</label><input id="staff-img" placeholder="https://..."></div>
+              <div class="full"><label>Description</label><input id="staff-desc" placeholder="Courte description"></div>
+              <div class="btnrow">
+                <button class="btn primary small" id="staff-add-btn" onclick="addStaff()">Ajouter au staff</button>
+                <button class="btn ghost small" id="staff-cancel-btn" onclick="cancelStaffEdit()" style="display:none;">Annuler</button>
+              </div>
+            </div>
+            <div class="admin-list" id="staff-admin-list"></div>
+          </div>
+
+          <div class="admin-tabpane" data-apane="advanced">
+            <div class="admin-subblock">
+              <h3>Sauvegarde automatique (serveur)</h3>
+              <div class="admin-form">
+                <div class="full"><label>Clé de sauvegarde (définie dans Netlify > variable SAVE_SECRET)</label><input type="password" id="save-secret-input" placeholder="Colle ta clé ici"></div>
+                <div class="btnrow">
+                  <button class="btn small" onclick="saveSecretKey()">Enregistrer la clé sur cet appareil</button>
+                  <button class="btn small" onclick="reloadFromServer()">Recharger depuis le serveur</button>
+                </div>
+              </div>
+              <div id="sync-status" style="font-size:13px;min-height:18px;"></div>
+            </div>
+            <div class="admin-note">Chaque modification (règlement, jobs, staff...) se sauvegarde désormais automatiquement pour tous les visiteurs, une fois la clé enregistrée ci-dessus et la clé Netlify configurée. <b>Télécharger data.json</b> reste utile comme sauvegarde de secours.</div>
+            <div class="json-actions">
+              <button class="btn primary small" onclick="adminApply()">Appliquer le JSON</button>
+              <button class="btn small" onclick="adminDownload()">Télécharger data.json</button>
+              <label class="file-input-label">Importer un fichier<input type="file" accept="application/json" onchange="adminImport(event)"></label>
+              <button class="btn small danger" onclick="adminReset()">Réinitialiser</button>
+            </div>
+            <textarea id="admin-json" spellcheck="false"></textarea>
+            <div id="admin-status"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+var defaultData = {
+  admin: { pin: "onelife2026" },
+  brand: { logoUrl: "" },
+  home: {
+    title: "OneLife, une ville qui se souvient de tout.",
+    lede: "Un serveur roleplay francophone où chaque choix a une suite. Pas de reset de scénario, pas de raccourci.",
+    features: [
+      { title: "Un RP sérieux et encadré", text: "Un règlement clair, une équipe de modération présente, un système de sanctions transparent." },
+      { title: "Une économie qui tourne", text: "Jobs légaux et illégaux, entreprises jouables, immobilier." },
+      { title: "Des factions vivantes", text: "Institutions, organisations et groupes indépendants coexistent." },
+      { title: "Support réactif", text: "Une équipe joignable par ticket, des retours suivis." }
+    ],
+    steps: [
+      "Rejoignez le Discord et lisez les annonces.",
+      "Lisez le règlement en entier avant votre première connexion.",
+      "Passez la whitelist / créez votre personnage.",
+      "Connectez-vous et commencez votre histoire."
+    ]
+  },
+  reglement: [
+    { id: "rp", label: "Règlement RP", type: "rules", note: "Les règles qui encadrent le jeu de rôle en lui-même.", items: [
+      { title: "Roleplay avant tout", text: "Toute action doit avoir une justification IC. Metagaming et powergaming interdits." },
+      { title: "Value your life", text: "Un braquage à cinq contre un ne se conteste pas à mains nues." },
+      { title: "Fear RP", text: "Un personnage normal a peur pour sa vie face à une arme." },
+      { title: "Nommage réaliste", text: "Prénom et nom crédibles, sans référence à un pseudo." },
+      { title: "Délais de RP", text: "Respectez les temporisations après arrestation ou décès." }
+    ]},
+    { id: "hrp", label: "Règlement HRP", type: "rules", note: "Le comportement attendu en dehors du personnage.", items: [
+      { title: "Respect entre joueurs", text: "Aucune insulte, discrimination ou harcèlement en OOC." },
+      { title: "Combat logging", text: "Se déconnecter pour échapper à un RP en cours est interdit." },
+      { title: "Exploits et bugs", text: "Tout bug doit être signalé, jamais exploité." },
+      { title: "Signalement", text: "Tout litige se règle par ticket support." },
+      { title: "Sanctions", text: "Échelle progressive : avertissement, kick, ban temporaire, ban définitif." }
+    ]},
+    { id: "comm", label: "Communication / 911", type: "rules", note: "Usage réaliste des communications en jeu.", items: [
+      { title: "Appel du 911", text: "Réservé aux urgences réelles en RP." },
+      { title: "Radios et fréquences", text: "Chaque faction a sa fréquence propre." },
+      { title: "Téléphone et réseaux IC", text: "Infos IC utilisables uniquement en cohérence avec le RP." }
+    ]},
+    { id: "illegal", label: "Activités illégales", type: "rules", note: "Cadre spécifique aux activités criminelles jouables.", items: [
+      { title: "Braquages", text: "Nombre minimum requis, cooldown entre deux braquages." },
+      { title: "Prises d'otage", text: "Durée maximale encadrée, RP cohérent." },
+      { title: "Guerre de territoire", text: "Suit les règles dédiées annoncées par le staff." }
+    ]},
+    { id: "lexique", label: "Lexique", type: "lexique", note: "Les termes à connaître avant de jouer.", items: [
+      { term: "RP", def: "Roleplay — agir en cohérence avec son personnage." },
+      { term: "HRP", def: "Hors roleplay — ce qui concerne le joueur réel." },
+      { term: "Metagaming", def: "Utiliser en jeu une info obtenue hors RP." },
+      { term: "Powergaming", def: "Forcer une action sur un autre joueur." },
+      { term: "Fear RP", def: "Jouer la peur de façon réaliste." },
+      { term: "VDM", def: "Value your life — valoriser la vie de son personnage." }
+    ]}
+  ],
+  lore: {
+    intro: [
+      { p: "OneLife se déroule dans une ville où rien ne se répare tout seul." },
+      { h: "Le contexte", p: "Décrivez la situation politique, économique ou sociale de la ville." },
+      { h: "Les factions", p: "Institutions, organisations criminelles, entreprises." }
+    ],
+    videoId: "dQw4w9WgXcQ",
+    gallery: [
+      "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=600&q=60",
+      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=60",
+      "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&q=60"
+    ]
+  },
+  jobs: [
+    { type: "legal", org: "Police (LSPD)", name: "Patron", text: "@Alvarez Castillo", status: "pris" },
+    { type: "legal", org: "SAMS (Ambulanciers)", name: "Patron", text: "@Trevon Brown", status: "pris" },
+    { type: "legal", org: "Gouvernement / Mairie", name: "Patron", text: "@Alex Tatas", status: "pris" },
+    { type: "legal", org: "Mécaniciens", name: "Patron", text: "@Pedro Mendes", status: "pris" },
+    { type: "legal", org: "Benny's Dépannage", name: "Patron", text: "@𝓢𝓞𝓛𝓞", status: "pris" },
+    { type: "legal", org: "Dynasty 8", name: "Patron", text: "@Lexie Owens", status: "pris" },
+    { type: "legal", org: "Taxi", name: "Patron", text: "@Michael CARTER", status: "pris" },
+    { type: "legal", org: "Concessionnaire Automobile", name: "Patron", text: "@Michael Corveli", status: "pris" },
+    { type: "legal", org: "Burger Shot", name: "Patron", text: "@Lorenzo Mancini /9zxh.", status: "pris" },
+    { type: "legal", org: "Pizzeria", name: "Patron", text: "@Kevin siari", status: "pris" },
+    { type: "legal", org: "Uwu Café", name: "Patronne", text: "@Sakura Kuroyama", status: "pris" },
+    { type: "legal", org: "The Palace", name: "Patron", text: "@Ernesto Casanova", status: "pris" },
+    { type: "legal", org: "Paradise Beach Club", name: "Patron", text: "Poste vacant.", status: "libre" },
+    { type: "legal", org: "Vigneron", name: "Patron", text: "@Marc Evans", status: "pris" },
+    { type: "legal", org: "Ferme De La Vega", name: "Patronne", text: "@Selena Delavega", status: "pris" },
+    { type: "legal", org: "Best Buds", name: "Patron", text: "Poste vacant.", status: "libre" },
+    { type: "illegal", org: "Les Vipères", name: "Trafic de stupéfiants", text: "Reprise de territoire : occuper une zone un temps donné pour la contrôler.", status: "pris" },
+    { type: "illegal", org: "Cartel du Port", name: "Contrebande", text: "Import et revente de marchandises illégales via le port.", status: "libre" }
+  ],
+  team: [
+    { name: "Kibo", role: "Fondateur / Développeur", text: "Développement serveur, scripts sur-mesure.", img: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60" }
+  ]
+};
+
+var siteData = null;
+var activeRegCat = null;
+var editingReg = null;
+var editingJob = null;
+var editingStaff = null;
+var editingLoreP = null;
+var editingLoreImg = null;
+
+function slugify(s) {
+  var out = s.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return out || ('cat-' + Date.now());
+}
+
+function renderJobList(containerId, items) {
+  var html = '';
+  items.forEach(function(it) {
+    html += '<div class="rule">' +
+      '<div class="job-status-wrap"><span class="status-dot ' + it.status + '"></span><span class="status-label">' + (it.status === 'libre' ? 'Libre' : 'Pris') + '</span></div>' +
+      '<div><h3>' + it.org + '</h3><span class="job-sub">' + (it.type === 'legal' ? 'Entreprise' : 'Organisation') + ' · ' + it.name + '</span><p>' + it.text + '</p></div>' +
+      '</div>';
+  });
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function render() {
+  var d = siteData;
+
+  document.getElementById('brand-mark').innerHTML = d.brand && d.brand.logoUrl ? '<img src="' + d.brand.logoUrl + '" alt="Logo">' : 'OL';
+
+  document.getElementById('home-title').textContent = d.home.title;
+  document.getElementById('home-lede').textContent = d.home.lede;
+  document.getElementById('home-features').innerHTML = d.home.features.map(function(f) {
+    return '<div class="feature"><h3>' + f.title + '</h3><p>' + f.text + '</p></div>';
+  }).join('');
+  document.getElementById('home-steps').innerHTML = d.home.steps.map(function(s) { return '<li>' + s + '</li>'; }).join('');
+
+  if (!activeRegCat || !d.reglement.some(function(c) { return c.id === activeRegCat; })) {
+    activeRegCat = d.reglement[0] ? d.reglement[0].id : null;
+  }
+  document.getElementById('reglement-subpanels').innerHTML = d.reglement.map(function(cat) {
+    var body = cat.type === 'lexique'
+      ? '<dl class="lexique">' + cat.items.map(function(l) { return '<div class="lexique-item"><dt>' + l.term + '</dt><dd>' + l.def + '</dd></div>'; }).join('') + '</dl>'
+      : '<div class="rules">' + cat.items.map(function(it, i) { var n = String(i + 1).padStart(2, '0'); return '<div class="rule"><div class="num">' + n + '</div><div><h3>' + it.title + '</h3><p>' + it.text + '</p></div></div>'; }).join('') + '</div>';
+    return '<div class="subpanel' + (cat.id === activeRegCat ? ' active' : '') + '" data-subpanel="' + cat.id + '"><p class="subnote">' + (cat.note || '') + '</p>' + body + '</div>';
+  }).join('');
+  document.getElementById('reglement-navsub').innerHTML = d.reglement.map(function(cat) {
+    return '<button class="navsublink' + (cat.id === activeRegCat ? ' active' : '') + '" data-sub="' + cat.id + '">' + cat.label + '</button>';
+  }).join('');
+
+  document.getElementById('lore-text').innerHTML = d.lore.intro.map(function(b) {
+    return (b.h ? '<h3>' + b.h + '</h3>' : '') + '<p>' + b.p + '</p>';
+  }).join('');
+  document.getElementById('lore-video').src = 'https://www.youtube.com/embed/' + d.lore.videoId;
+  document.getElementById('lore-gallery').innerHTML = d.lore.gallery.map(function(src) {
+    return '<img src="' + src + '" alt="Illustration OneLife RP">';
+  }).join('');
+
+  renderJobList('legal-legal', d.jobs.filter(function(j) { return j.type === 'legal'; }));
+  renderJobList('legal-illegal', d.jobs.filter(function(j) { return j.type === 'illegal'; }));
+
+  document.getElementById('team-grid').innerHTML = d.team.map(function(m) {
+    return '<div class="member"><div class="avatar"><img src="' + m.img + '" alt="' + m.name + '"></div><h3>' + m.name + '</h3><span>' + m.role + '</span><p>' + m.text + '</p></div>';
+  }).join('');
+
+  populateRegCatSelect();
+  renderRegAdminList();
+
+  document.getElementById('lore-p-list').innerHTML = d.lore.intro.map(function(b, i) {
+    return '<div class="admin-row"><div class="info"><b>' + (b.h || '(sans titre)') + '</b><span>' + b.p + '</span></div><div class="row-actions"><button class="btn tiny" onclick="editLoreParagraph(' + i + ')">Modifier</button><button class="btn tiny danger" onclick="removeLoreParagraph(' + i + ')">Suppr.</button></div></div>';
+  }).join('') || '<p class="lede">Aucun paragraphe.</p>';
+
+  document.getElementById('lore-img-list').innerHTML = d.lore.gallery.map(function(src, i) {
+    return '<div class="admin-row"><img class="thumb" src="' + src + '" alt="" style="border-radius:6px;"><div class="info"><span>' + src + '</span></div><div class="row-actions"><button class="btn tiny" onclick="editLoreImage(' + i + ')">Modifier</button><button class="btn tiny danger" onclick="removeLoreImage(' + i + ')">Suppr.</button></div></div>';
+  }).join('') || '<p class="lede">Aucune image.</p>';
+
+  document.getElementById('job-admin-list').innerHTML = d.jobs.map(function(j, i) {
+    return '<div class="admin-row"><span class="badge ' + j.type + '">' + (j.type === 'legal' ? 'Légal' : 'Illégal') + '</span>' +
+      '<span class="status-dot ' + j.status + '"></span>' +
+      '<div class="info"><b>' + j.org + ' — ' + j.name + '</b><span>' + j.text + '</span></div>' +
+      '<div class="row-actions"><button class="btn tiny" onclick="toggleJobStatus(' + i + ')">Basculer</button><button class="btn tiny" onclick="editJob(' + i + ')">Modifier</button><button class="btn tiny danger" onclick="removeJob(' + i + ')">Suppr.</button></div></div>';
+  }).join('') || '<p class="lede">Aucun job pour l\'instant.</p>';
+
+  document.getElementById('staff-admin-list').innerHTML = d.team.map(function(m, i) {
+    return '<div class="admin-row"><img class="thumb" src="' + m.img + '" alt=""><div class="info"><b>' + m.name + '</b><span>' + m.role + '</span></div><div class="row-actions"><button class="btn tiny" onclick="editStaff(' + i + ')">Modifier</button><button class="btn tiny danger" onclick="removeStaff(' + i + ')">Suppr.</button></div></div>';
+  }).join('') || '<p class="lede">Aucun membre pour l\'instant.</p>';
+
+  document.getElementById('gen-logo').value = (d.brand && d.brand.logoUrl) || '';
+  document.getElementById('gen-title').value = d.home.title;
+  document.getElementById('gen-lede').value = d.home.lede;
+  document.getElementById('lore-videoid-input').value = d.lore.videoId;
+  document.getElementById('save-secret-input').value = localStorage.getItem('onelife_save_secret') || '';
+
+  document.getElementById('admin-json').value = JSON.stringify(d, null, 2);
+}
+
+/* ---------- Règlement : catégories dynamiques ---------- */
+function populateRegCatSelect() {
+  var sel = document.getElementById('reg-cat');
+  var current = sel.value;
+  sel.innerHTML = siteData.reglement.map(function(c) { return '<option value="' + c.id + '">' + c.label + '</option>'; }).join('');
+  if (siteData.reglement.some(function(c) { return c.id === current; })) sel.value = current;
+  else if (siteData.reglement[0]) sel.value = siteData.reglement[0].id;
+}
+
+function addCategory() {
+  var label = document.getElementById('newcat-label').value.trim();
+  var type = document.getElementById('newcat-type').value;
+  if (!label) { setStatus('Nom de catégorie requis.', false); return; }
+  var base = slugify(label);
+  var ids = siteData.reglement.map(function(c) { return c.id; });
+  var id = base, n = 2;
+  while (ids.indexOf(id) !== -1) { id = base + '-' + n; n++; }
+  siteData.reglement.push({ id: id, label: label, type: type, note: '', items: [] });
+  document.getElementById('newcat-label').value = '';
+  activeRegCat = id;
+  persist(); render();
+  document.getElementById('reg-cat').value = id;
+  renderRegAdminList();
+}
+
+function deleteCategory() {
+  var catId = document.getElementById('reg-cat').value;
+  if (siteData.reglement.length <= 1) { setStatus('Il faut garder au moins une catégorie.', false); return; }
+  siteData.reglement = siteData.reglement.filter(function(c) { return c.id !== catId; });
+  if (activeRegCat === catId) activeRegCat = null;
+  cancelRegEdit();
+  persist(); render();
+}
+
+function renameCategory() {
+  var catId = document.getElementById('reg-cat').value;
+  var newLabel = document.getElementById('reg-cat-rename').value.trim();
+  if (!newLabel) return;
+  var cat = siteData.reglement.find(function(c) { return c.id === catId; });
+  if (cat) cat.label = newLabel;
+  persist(); render();
+}
+
+function renderRegAdminList() {
+  var catId = document.getElementById('reg-cat').value;
+  var cat = siteData.reglement.find(function(c) { return c.id === catId; }) || siteData.reglement[0];
+  if (!cat) { document.getElementById('reg-admin-list').innerHTML = ''; return; }
+  var isLex = cat.type === 'lexique';
+  document.getElementById('reg-fields-normal').style.display = isLex ? 'none' : 'contents';
+  document.getElementById('reg-fields-lexique').style.display = isLex ? 'contents' : 'none';
+  document.getElementById('reg-cat-rename').value = cat.label;
+  document.getElementById('reg-admin-list').innerHTML = cat.items.map(function(it, i) {
+    var label = isLex ? it.term : it.title;
+    var sub = isLex ? it.def : it.text;
+    return '<div class="admin-row"><div class="info"><b>' + label + '</b><span>' + sub + '</span></div><div class="row-actions"><button class="btn tiny" onclick="editRegItem(\'' + cat.id + '\',' + i + ')">Modifier</button><button class="btn tiny danger" onclick="removeRegItem(\'' + cat.id + '\',' + i + ')">Suppr.</button></div></div>';
+  }).join('') || '<p class="lede">Rien dans cette catégorie.</p>';
+}
+
+function addRegItem() {
+  var catId = document.getElementById('reg-cat').value;
+  var cat = siteData.reglement.find(function(c) { return c.id === catId; });
+  if (!cat) return;
+  if (cat.type === 'lexique') {
+    var term = document.getElementById('reg-term').value.trim();
+    var def = document.getElementById('reg-def').value.trim();
+    if (!term) { setStatus('Terme requis.', false); return; }
+    var entry1 = { term: term, def: def };
+    if (editingReg && editingReg.catId === catId) cat.items[editingReg.index] = entry1; else cat.items.push(entry1);
+    document.getElementById('reg-term').value = ''; document.getElementById('reg-def').value = '';
+  } else {
+    var title = document.getElementById('reg-title').value.trim();
+    var text = document.getElementById('reg-text').value.trim();
+    if (!title) { setStatus('Titre requis.', false); return; }
+    var entry2 = { title: title, text: text };
+    if (editingReg && editingReg.catId === catId) cat.items[editingReg.index] = entry2; else cat.items.push(entry2);
+    document.getElementById('reg-title').value = ''; document.getElementById('reg-text').value = '';
+  }
+  cancelRegEdit();
+  persist(); render();
+}
+function editRegItem(catId, i) {
+  var cat = siteData.reglement.find(function(c) { return c.id === catId; });
+  if (!cat) return;
+  document.getElementById('reg-cat').value = catId;
+  renderRegAdminList();
+  var it = cat.items[i];
+  if (cat.type === 'lexique') { document.getElementById('reg-term').value = it.term; document.getElementById('reg-def').value = it.def; }
+  else { document.getElementById('reg-title').value = it.title; document.getElementById('reg-text').value = it.text; }
+  editingReg = { catId: catId, index: i };
+  document.getElementById('reg-add-btn').textContent = 'Enregistrer';
+  document.getElementById('reg-cancel-btn').style.display = 'inline-block';
+}
+function cancelRegEdit() {
+  editingReg = null;
+  document.getElementById('reg-add-btn').textContent = 'Ajouter';
+  document.getElementById('reg-cancel-btn').style.display = 'none';
+  document.getElementById('reg-title').value = ''; document.getElementById('reg-text').value = '';
+  document.getElementById('reg-term').value = ''; document.getElementById('reg-def').value = '';
+}
+function removeRegItem(catId, i) {
+  var cat = siteData.reglement.find(function(c) { return c.id === catId; });
+  if (!cat) return;
+  cat.items.splice(i, 1);
+  if (editingReg && editingReg.catId === catId && editingReg.index === i) cancelRegEdit();
+  persist(); render();
+}
+
+/* ---------- Général / Lore / Jobs / Staff ---------- */
+function saveGeneral() {
+  siteData.brand = siteData.brand || {};
+  siteData.brand.logoUrl = document.getElementById('gen-logo').value.trim();
+  siteData.home.title = document.getElementById('gen-title').value.trim();
+  siteData.home.lede = document.getElementById('gen-lede').value.trim();
+  persist(); render();
+  setStatus('Informations générales enregistrées.', true);
+}
+
+function saveLoreVideo() {
+  siteData.lore.videoId = document.getElementById('lore-videoid-input').value.trim();
+  persist(); render();
+}
+function addLoreParagraph() {
+  var h = document.getElementById('lore-p-h').value.trim();
+  var p = document.getElementById('lore-p-text').value.trim();
+  if (!p) { setStatus('Texte du paragraphe requis.', false); return; }
+  var entry = { p: p }; if (h) entry.h = h;
+  if (editingLoreP !== null) siteData.lore.intro[editingLoreP] = entry; else siteData.lore.intro.push(entry);
+  cancelLorePEdit();
+  document.getElementById('lore-p-h').value = ''; document.getElementById('lore-p-text').value = '';
+  persist(); render();
+}
+function editLoreParagraph(i) {
+  var b = siteData.lore.intro[i];
+  document.getElementById('lore-p-h').value = b.h || '';
+  document.getElementById('lore-p-text').value = b.p || '';
+  editingLoreP = i;
+  document.getElementById('lorep-add-btn').textContent = 'Enregistrer';
+  document.getElementById('lorep-cancel-btn').style.display = 'inline-block';
+}
+function cancelLorePEdit() {
+  editingLoreP = null;
+  document.getElementById('lorep-add-btn').textContent = 'Ajouter un paragraphe';
+  document.getElementById('lorep-cancel-btn').style.display = 'none';
+  document.getElementById('lore-p-h').value = ''; document.getElementById('lore-p-text').value = '';
+}
+function removeLoreParagraph(i) { siteData.lore.intro.splice(i, 1); if (editingLoreP === i) cancelLorePEdit(); persist(); render(); }
+
+function addLoreImage() {
+  var url = document.getElementById('lore-img-url').value.trim();
+  if (!url) return;
+  if (editingLoreImg !== null) siteData.lore.gallery[editingLoreImg] = url; else siteData.lore.gallery.push(url);
+  cancelLoreImgEdit();
+  document.getElementById('lore-img-url').value = '';
+  persist(); render();
+}
+function editLoreImage(i) {
+  document.getElementById('lore-img-url').value = siteData.lore.gallery[i];
+  editingLoreImg = i;
+  document.getElementById('loreimg-add-btn').textContent = 'Enregistrer';
+  document.getElementById('loreimg-cancel-btn').style.display = 'inline-block';
+}
+function cancelLoreImgEdit() {
+  editingLoreImg = null;
+  document.getElementById('loreimg-add-btn').textContent = "Ajouter l'image";
+  document.getElementById('loreimg-cancel-btn').style.display = 'none';
+  document.getElementById('lore-img-url').value = '';
+}
+function removeLoreImage(i) { siteData.lore.gallery.splice(i, 1); if (editingLoreImg === i) cancelLoreImgEdit(); persist(); render(); }
+
+function updateJobOrgLabel() {
+  var type = document.getElementById('job-type').value;
+  document.getElementById('job-org-label').textContent = type === 'legal' ? 'Entreprise' : 'Organisation';
+}
+function addJob() {
+  var type = document.getElementById('job-type').value;
+  var org = document.getElementById('job-org').value.trim();
+  var name = document.getElementById('job-name').value.trim();
+  var status = document.getElementById('job-status').value;
+  var text = document.getElementById('job-desc').value.trim();
+  if (!org || !name) { setStatus('Entreprise/organisation et nom du poste requis.', false); return; }
+  var entry = { type: type, org: org, name: name, text: text, status: status };
+  if (editingJob !== null) siteData.jobs[editingJob] = entry; else siteData.jobs.push(entry);
+  cancelJobEdit();
+  persist(); render();
+  document.getElementById('job-org').value = ''; document.getElementById('job-name').value = ''; document.getElementById('job-desc').value = '';
+}
+function editJob(i) {
+  var j = siteData.jobs[i];
+  document.getElementById('job-type').value = j.type;
+  updateJobOrgLabel();
+  document.getElementById('job-org').value = j.org;
+  document.getElementById('job-name').value = j.name;
+  document.getElementById('job-status').value = j.status;
+  document.getElementById('job-desc').value = j.text;
+  editingJob = i;
+  document.getElementById('job-add-btn').textContent = 'Enregistrer';
+  document.getElementById('job-cancel-btn').style.display = 'inline-block';
+}
+function cancelJobEdit() {
+  editingJob = null;
+  document.getElementById('job-add-btn').textContent = 'Ajouter';
+  document.getElementById('job-cancel-btn').style.display = 'none';
+}
+function removeJob(i) { siteData.jobs.splice(i, 1); if (editingJob === i) cancelJobEdit(); persist(); render(); }
+function toggleJobStatus(i) { siteData.jobs[i].status = siteData.jobs[i].status === 'libre' ? 'pris' : 'libre'; persist(); render(); }
+
+function addStaff() {
+  var name = document.getElementById('staff-name').value.trim();
+  var role = document.getElementById('staff-role').value.trim();
+  var img = document.getElementById('staff-img').value.trim() || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=60';
+  var text = document.getElementById('staff-desc').value.trim();
+  if (!name) { setStatus('Nom requis.', false); return; }
+  var entry = { name: name, role: role, img: img, text: text };
+  if (editingStaff !== null) siteData.team[editingStaff] = entry; else siteData.team.push(entry);
+  cancelStaffEdit();
+  persist(); render();
+  document.getElementById('staff-name').value = ''; document.getElementById('staff-role').value = '';
+  document.getElementById('staff-img').value = ''; document.getElementById('staff-desc').value = '';
+}
+function editStaff(i) {
+  var m = siteData.team[i];
+  document.getElementById('staff-name').value = m.name;
+  document.getElementById('staff-role').value = m.role;
+  document.getElementById('staff-img').value = m.img;
+  document.getElementById('staff-desc').value = m.text;
+  editingStaff = i;
+  document.getElementById('staff-add-btn').textContent = 'Enregistrer';
+  document.getElementById('staff-cancel-btn').style.display = 'inline-block';
+}
+function cancelStaffEdit() {
+  editingStaff = null;
+  document.getElementById('staff-add-btn').textContent = 'Ajouter au staff';
+  document.getElementById('staff-cancel-btn').style.display = 'none';
+}
+function removeStaff(i) { siteData.team.splice(i, 1); if (editingStaff === i) cancelStaffEdit(); persist(); render(); }
+
+function persist() {
+  localStorage.setItem('onelife_data', JSON.stringify(siteData));
+  syncToServer();
+}
+
+function syncToServer() {
+  var secret = localStorage.getItem('onelife_save_secret') || '';
+  fetch('/.netlify/functions/data-save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret },
+    body: JSON.stringify(siteData)
+  }).then(function(r) {
+    if (r.ok) { setSyncStatus('Sauvegardé sur le serveur pour tous les visiteurs.', true); }
+    else if (r.status === 401) { setSyncStatus('Clé de sauvegarde incorrecte ou absente — la modification reste seulement dans ce navigateur.', false); }
+    else { setSyncStatus('Échec de la sauvegarde serveur (code ' + r.status + ').', false); }
+  }).catch(function() {
+    setSyncStatus('Fonction de sauvegarde injoignable (normal en local, avant déploiement sur Netlify).', false);
+  });
+}
+
+function setSyncStatus(msg, ok) {
+  var el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = ok ? 'var(--green)' : 'var(--red)';
+}
+
+function saveSecretKey() {
+  var val = document.getElementById('save-secret-input').value;
+  localStorage.setItem('onelife_save_secret', val);
+  syncToServer();
+}
+
+function reloadFromServer() {
+  fetch('/.netlify/functions/data-get').then(function(r) { if (!r.ok) throw 0; return r.json(); }).then(function(json) {
+    if (json) { siteData = json; localStorage.setItem('onelife_data', JSON.stringify(siteData)); activeRegCat = null; render(); setSyncStatus('Rechargé depuis le serveur.', true); }
+    else { setSyncStatus('Rien sur le serveur pour le moment.', false); }
+  }).catch(function() { setSyncStatus('Fonction indisponible.', false); });
+}
+
+function loadInitial() {
+  fetch('/.netlify/functions/data-get').then(function(r) { if (!r.ok) throw 0; return r.json(); }).then(function(json) {
+    if (json) { siteData = json; render(); }
+    else { loadFallback(); }
+  }).catch(function() { loadFallback(); });
+}
+
+function loadFallback() {
+  fetch('./data.json').then(function(r) { if (!r.ok) throw 0; return r.json(); }).then(function(json) {
+    siteData = json; render();
+  }).catch(function() {
+    var saved = localStorage.getItem('onelife_data');
+    siteData = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultData));
+    render();
+  });
+}
+
+function setStatus(msg, ok) {
+  var s = document.getElementById('admin-status');
+  s.textContent = msg; s.className = ok ? 'ok' : 'err';
+}
+
+function adminApply() {
+  try {
+    siteData = JSON.parse(document.getElementById('admin-json').value);
+    activeRegCat = null;
+    persist(); render();
+    setStatus('Appliqué — aperçu mis à jour dans ce navigateur.', true);
+  } catch (e) { setStatus('JSON invalide : ' + e.message, false); }
+}
+function adminDownload() {
+  var blob = new Blob([JSON.stringify(siteData, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'data.json'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function adminImport(evt) {
+  var file = evt.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function() {
+    try { siteData = JSON.parse(reader.result); activeRegCat = null; persist(); render(); setStatus('Fichier importé et appliqué.', true); }
+    catch (e) { setStatus('Fichier JSON invalide : ' + e.message, false); }
+  };
+  reader.readAsText(file);
+}
+function adminReset() {
+  siteData = JSON.parse(JSON.stringify(defaultData));
+  activeRegCat = null;
+  localStorage.removeItem('onelife_data'); render();
+  setStatus('Réinitialisé aux données par défaut.', true);
+}
+
+function showLegal(which) {
+  document.querySelectorAll('.legal-pane').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('legal-pane-' + which).classList.add('active');
+  document.querySelectorAll('.legal-tab').forEach(function(b) { b.classList.toggle('is-on', b.dataset.active === which); });
+}
+
+/* ---------- Navigation ---------- */
+function activateSection(id) {
+  document.querySelectorAll('.navlink').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById(id);
+  if (target) target.classList.add('active');
+  var navBtn = document.querySelector('.navlink[data-target="' + id + '"]');
+  if (navBtn) navBtn.classList.add('active');
+  document.getElementById('reglement-navsub').classList.toggle('open', id === 'reglement');
+}
+
+function tryUnlock() {
+  var val = document.getElementById('admin-pin').value;
+  if (val === (siteData.admin && siteData.admin.pin)) {
+    sessionStorage.setItem('onelife_admin_ok', '1');
+    unlockAdminUI();
+  } else {
+    document.getElementById('lock-status').textContent = 'Code incorrect.';
+  }
+}
+function unlockAdminUI() {
+  document.getElementById('admin-lock').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  document.getElementById('admin-navlink').style.display = 'flex';
+  document.getElementById('connect-btn').style.display = 'none';
+}
+
+document.querySelectorAll('.navlink').forEach(function(btn) {
+  btn.addEventListener('click', function() { activateSection(btn.dataset.target); });
+});
+
+document.getElementById('reglement-navsub').addEventListener('click', function(e) {
+  var btn = e.target.closest('.navsublink');
+  if (!btn) return;
+  activeRegCat = btn.dataset.sub;
+  activateSection('reglement');
+  document.querySelectorAll('#reglement-navsub .navsublink').forEach(function(b) { b.classList.toggle('active', b.dataset.sub === activeRegCat); });
+  document.querySelectorAll('#reglement-subpanels .subpanel').forEach(function(p) { p.classList.toggle('active', p.dataset.subpanel === activeRegCat); });
+});
+
+document.querySelectorAll('.admin-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.admin-tab').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.admin-tabpane').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelector('[data-apane="' + btn.dataset.atab + '"]').classList.add('active');
+  });
+});
+
+if (sessionStorage.getItem('onelife_admin_ok') === '1') {
+  document.getElementById('admin-navlink').style.display = 'flex';
+  document.getElementById('connect-btn').style.display = 'none';
+}
+
+loadInitial();
+</script>
+</body>
+</html>
